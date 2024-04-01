@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  CreateProjectKeyResponse,
-  LiveClient,
-  LiveTranscriptionEvents,
-  createClient,
-} from "@deepgram/sdk";
-import { useState, useEffect, useCallback } from "react";
-import { useQueue } from "@uidotdev/usehooks";
+import {createClient, CreateProjectKeyResponse, LiveClient, LiveTranscriptionEvents,} from "@deepgram/sdk";
+import {useCallback, useEffect, useState} from "react";
+import {useQueue} from "@uidotdev/usehooks";
 import Dg from "./dg.svg";
 import Recording from "./recording.svg";
 import Image from "next/image";
@@ -24,6 +19,8 @@ export default function Microphone() {
   const [microphone, setMicrophone] = useState<MediaRecorder | null>();
   const [userMedia, setUserMedia] = useState<MediaStream | null>();
   const [caption, setCaption] = useState<string | null>();
+  const [transcribedText, setTranscribedText] = useState<string | null>("");
+  // console.log("The caption is ", caption);
 
   const toggleMicrophone = useCallback(async () => {
     if (microphone && userMedia) {
@@ -45,6 +42,11 @@ export default function Microphone() {
 
       microphone.onstop = () => {
         setMicOpen(false);
+        console.log("off button clicked")
+        // console.log("Value of caption on stop", caption)
+        if (caption) {
+          setTranscribedText(caption);
+        }
       };
 
       microphone.ondataavailable = (e) => {
@@ -56,10 +58,12 @@ export default function Microphone() {
     }
   }, [add, microphone, userMedia]);
 
+
+
   useEffect(() => {
     if (!apiKey) {
       console.log("getting a new api key");
-      fetch("/api", { cache: "no-store" })
+      fetch("/api/deepgram", { cache: "no-store" })
         .then((res) => res.json())
         .then((object) => {
           if (!("key" in object)) throw new Error("No api key returned");
@@ -102,9 +106,9 @@ export default function Microphone() {
           .join(" ");
         if (caption !== "") {
           setCaption(caption);
+          console.log("Value of caption:", caption)
         }
       });
-
       setConnection(connection);
       setLoading(false);
     }
@@ -130,6 +134,35 @@ export default function Microphone() {
 
     processQueue();
   }, [connection, queue, remove, first, size, isProcessing, isListening]);
+
+  useEffect(() => {
+    if (caption) {
+      setTranscribedText((prevText) => {
+        // console.log("New text:", newText);
+        return caption;
+      });
+      // console.log("Transcribed text is ", transcribedText);
+    }
+  }, [caption]);
+
+  useEffect(() => {
+    async function postTranscribedText(data: {}) {
+      const res = await fetch('/api/groq',{
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+      })
+      const resultData = await res.json();
+      console.log("Result is ", resultData);
+      return resultData;
+    }
+    if (!micOpen && transcribedText !== "") {
+      postTranscribedText({string: transcribedText});
+    }
+  }, [micOpen, transcribedText]);
 
   if (isLoadingKey)
     return (
