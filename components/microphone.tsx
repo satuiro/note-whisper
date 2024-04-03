@@ -141,7 +141,7 @@ export default function Microphone() {
         // console.log("New text:", newText);
         return caption;
       });
-      // console.log("Transcribed text is ", transcribedText);
+      console.log("Transcribed text is ", transcribedText);
     }
   }, [caption]);
 
@@ -160,7 +160,9 @@ export default function Microphone() {
       return resultData;
     }
     if (!micOpen && transcribedText !== "") {
+      // setTranscribedText(caption)
       postTranscribedText({string: transcribedText});
+      setTranscribedText("");
     }
   }, [micOpen, transcribedText]);
 
