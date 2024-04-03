@@ -4,7 +4,7 @@ import Groq from "groq-sdk";
 const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY
 });
-async function chatResponse(transcribeText) {
+async function chatResponse(transcribeText: string) {
     const chatCompletion = await groq.chat.completions.create({
         "messages": [
             {
