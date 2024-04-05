@@ -19,11 +19,7 @@ export default async function Dashboard() {
   const user = await currentUser();
 
   if (userId !== null && user !== null) {
-    const findUser = await prismadb.user.findFirst({
-      where: {
-        id: userId
-      }
-    })
+    const findUser = false
     // console.log("User found", findUser);
     if (!findUser) {
       const createUser = await prismadb.user.create({
