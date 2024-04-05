@@ -9,7 +9,7 @@ async function chatResponse(transcribeText: string) {
         "messages": [
             {
                 "role": "user",
-                "content": "Summarize the given sentances or condense them that I'll be giving you in upcoming prompts such that I can use them as notes in my note taking application"
+                "content": "Summarize the given sentances or condense them that I'll be giving you in upcoming prompts such that I can use them as notes in my note taking application (the result should be in object format like {result: 'response'})"
             },
             {
                 "role": "assistant",
@@ -21,7 +21,7 @@ async function chatResponse(transcribeText: string) {
             },
             {
                 "role": "assistant",
-                "content": "- Finish computer science assignment\n- Design app's UI with Tailwind CSS\n- After class, buy groceries\n"
+                "content": "-Make sure to compelete computer assignment\n-Design UI of app using Tailwind CSS\n-Bring groceries after university"
             },
             {
                 "role": "user",

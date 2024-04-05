@@ -6,6 +6,7 @@ import {useQueue} from "@uidotdev/usehooks";
 import Dg from "./dg.svg";
 import Recording from "./recording.svg";
 import Image from "next/image";
+import { useResultStore } from "@/store/result";
 
 export default function Microphone() {
   const { add, remove, first, size, queue } = useQueue<any>([]);
@@ -21,6 +22,9 @@ export default function Microphone() {
   const [caption, setCaption] = useState<string | null>();
   const [transcribedText, setTranscribedText] = useState<string | null>("");
   // console.log("The caption is ", caption);
+
+  const result = useResultStore((state: any) => state.result)
+  const setResult = useResultStore((state: any) => state.updateResult)
 
   const toggleMicrophone = useCallback(async () => {
     if (microphone && userMedia) {
@@ -161,7 +165,9 @@ export default function Microphone() {
     }
     if (!micOpen && transcribedText !== "") {
       // setTranscribedText(caption)
-      postTranscribedText({string: transcribedText});
+      postTranscribedText({string: transcribedText})
+        .then(res => setResult(res))
+        .catch(error => console.log(error))
       setTranscribedText("");
     }
   }, [micOpen, transcribedText]);

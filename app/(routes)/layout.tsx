@@ -4,7 +4,7 @@ import Sidebar from "@/components/Sidebar";
 export default function RoutesLayout({ children }:
     { children: React.ReactNode }) {
     return (
-        <div className="h-full">
+        <div className="h-full" suppressHydrationWarning>
             <Navbar />
             <div className="hidden md:flex mt-16 h-full w-20 flex-col fixed inset-y-0">
                 <Sidebar />
