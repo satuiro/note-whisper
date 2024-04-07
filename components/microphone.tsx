@@ -69,7 +69,7 @@ export default function Microphone() {
 
   useEffect(() => {
     if (!apiKey) {
-      console.log("getting a new api key");
+      // console.log("getting a new api key");
       fetch("/api/deepgram", { cache: "no-store" })
         .then((res) => res.json())
         .then((object) => {
@@ -86,7 +86,7 @@ export default function Microphone() {
 
   useEffect(() => {
     if (apiKey && "key" in apiKey) {
-      console.log("connecting to deepgram");
+      // console.log("connecting to deepgram");
       const deepgram = createClient(apiKey?.key ?? "");
       const connection = deepgram.listen.live({
         model: "nova",
@@ -95,12 +95,12 @@ export default function Microphone() {
       });
 
       connection.on(LiveTranscriptionEvents.Open, () => {
-        console.log("connection established");
+        // console.log("connection established");
         setListening(true);
       });
 
       connection.on(LiveTranscriptionEvents.Close, () => {
-        console.log("connection closed");
+        // console.log("connection closed");
         setListening(false);
         setApiKey(null);
         setConnection(null);
@@ -113,7 +113,7 @@ export default function Microphone() {
           .join(" ");
         if (caption !== "") {
           setCaption(caption);
-          console.log("Value of caption:", caption);
+          // console.log("Value of caption:", caption);
         }
       });
       setConnection(connection);
@@ -148,7 +148,7 @@ export default function Microphone() {
         // console.log("New text:", newText);
         return caption;
       });
-      console.log("Transcribed text is ", transcribedText);
+      // console.log("Transcribed text is ", transcribedText);
     }
   }, [caption]);
 

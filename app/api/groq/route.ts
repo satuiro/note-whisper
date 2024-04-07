@@ -45,7 +45,6 @@ async function chatResponse(transcribeText: string) {
         }
     }
 
-    console.log("Final response",response);
     return response;
 }
 export async function POST(req: Request) {
@@ -57,9 +56,9 @@ export async function POST(req: Request) {
 
 
         if (inputString) {
-            console.log("String received",inputString)
+            // console.log("String received",inputString)
             const result = await chatResponse(inputString);
-            console.log("result is",result);
+            // console.log("result is",result);
             return NextResponse.json({result: result })
         } else {
             return NextResponse.json({ error: 'No input provided' }, { status: 400 })

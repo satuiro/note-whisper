@@ -52,15 +52,15 @@ export default function ShowNotes() {
       }
       sendNote({transcribeText: result.result})
         .then((res) => {
-          console.log("response is", res)
+          // console.log("response is", res)
         })
         .catch((error: any) => {
-          console.log("Error in note ", error.message);
+          // console.log("Error in note ", error.message);
           
         })
     }, [result])
 
-    console.log("result is", result);
+    // console.log("result is", result);
 
     return (
       <div className="flex flex-row space-x-3">

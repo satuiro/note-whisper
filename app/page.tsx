@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const user = useUser();
   const router = useRouter();
-  console.log(user.user);
 
   return (
     <main>

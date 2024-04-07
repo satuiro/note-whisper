@@ -44,7 +44,7 @@ export async function GET() {
                     userId: user.id,
                 }
             })
-            console.log(notes);
+            // console.log(notes);
             
             return NextResponse.json(notes);
         }
