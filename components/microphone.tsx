@@ -1,8 +1,13 @@
 "use client";
 
-import {createClient, CreateProjectKeyResponse, LiveClient, LiveTranscriptionEvents,} from "@deepgram/sdk";
-import {useCallback, useEffect, useState} from "react";
-import {useQueue} from "@uidotdev/usehooks";
+import {
+  createClient,
+  CreateProjectKeyResponse,
+  LiveClient,
+  LiveTranscriptionEvents,
+} from "@deepgram/sdk";
+import { useCallback, useEffect, useState } from "react";
+import { useQueue } from "@uidotdev/usehooks";
 import Dg from "./dg.svg";
 import Recording from "./recording.svg";
 import Image from "next/image";
@@ -23,8 +28,8 @@ export default function Microphone() {
   const [transcribedText, setTranscribedText] = useState<string | null>("");
   // console.log("The caption is ", caption);
 
-  const result = useResultStore((state: any) => state.result)
-  const setResult = useResultStore((state: any) => state.updateResult)
+  const result = useResultStore((state: any) => state.result);
+  const setResult = useResultStore((state: any) => state.updateResult);
 
   const toggleMicrophone = useCallback(async () => {
     if (microphone && userMedia) {
@@ -46,7 +51,7 @@ export default function Microphone() {
 
       microphone.onstop = () => {
         setMicOpen(false);
-        console.log("off button clicked")
+        console.log("off button clicked");
         // console.log("Value of caption on stop", caption)
         if (caption) {
           setTranscribedText(caption);
@@ -61,8 +66,6 @@ export default function Microphone() {
       setMicrophone(microphone);
     }
   }, [add, microphone, userMedia]);
-
-
 
   useEffect(() => {
     if (!apiKey) {
@@ -110,7 +113,7 @@ export default function Microphone() {
           .join(" ");
         if (caption !== "") {
           setCaption(caption);
-          console.log("Value of caption:", caption)
+          console.log("Value of caption:", caption);
         }
       });
       setConnection(connection);
@@ -151,23 +154,23 @@ export default function Microphone() {
 
   useEffect(() => {
     async function postTranscribedText(data: {}) {
-      const res = await fetch('/api/groq',{
+      const res = await fetch("/api/groq", {
         method: "POST",
         mode: "cors",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
-      })
+        body: JSON.stringify(data),
+      });
       const resultData = await res.json();
-      console.log("Result is ", resultData);
+      // console.log("Result is ", resultData);
       return resultData;
     }
     if (!micOpen && transcribedText !== "") {
       // setTranscribedText(caption)
-      postTranscribedText({string: transcribedText})
-        .then(res => setResult(res))
-        .catch(error => console.log(error))
+      postTranscribedText({ string: transcribedText })
+        .then((res) => setResult(res))
+        .catch((error) => console.log(error));
       setTranscribedText("");
     }
   }, [micOpen, transcribedText]);
