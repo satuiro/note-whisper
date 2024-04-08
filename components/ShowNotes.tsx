@@ -1,23 +1,18 @@
 "use client"
 
 import { useResultStore } from "@/store/result"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card"
+import { Card, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react"
-import prismadb from "@/lib/prismadb"
-import { currentUser, useUser } from "@clerk/nextjs"
+import { useUser } from "@clerk/nextjs"
 import { Note } from "@prisma/client"
+import { Button } from "./ui/button"
+import { Delete, DeleteIcon } from "lucide-react"
   
 
 export default function ShowNotes() {
     
     const result: any = useResultStore((state: any) => state.result)
+    // const setResult = useResultStore((state: any) => state.updateResult);
     const user = useUser();
     const [notes, setNotes] = useState<Note[]>();
 
@@ -62,19 +57,45 @@ export default function ShowNotes() {
 
     // console.log("result is", result);
 
+    const handleDelete = async (id: number) => {
+      const noteDeleted = await fetch(`/api/notes/${id}`,{
+        method: 'DELETE',
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+      })
+
+      const res = await noteDeleted.json();
+
+      if (res) {
+        console.log("Note deleted", res)
+      }
+    }
+
     return (
-      <div className="flex flex-row space-x-3">
-        {
-              notes?.map((note) => (
-                <div key={note.id}>
-                  <Card className="w-[200px] mr-4 shadow-md">
-                    <CardTitle className="text-xl">
-                      <span>{note.content}</span>
-                    </CardTitle>
-                  </Card>
-                </div>
-              ))
-            }
+      <div className="flex flex-wrap mt-4">
+        {notes?.map((note, index) => (
+          <div key={note.id}>
+            <Card className="w-[200px] mr-4 mb-4 shadow-md">
+              <CardTitle className="text-xl">
+                <span className="font-semibold">
+                  {note.content}
+                  <Button
+                    variant="destructive"
+                    className="h-6 w-4 ml-2"
+                    onClick={() => handleDelete(note.id)}
+                  >
+                    <Delete />
+                  </Button>
+                </span>
+              </CardTitle>
+            </Card>
+            {(index + 1) % 4 === 0 && (
+              <div className="w-full" key={`row-${index}`} />
+            )}
+          </div>
+        ))}
       </div>
     );
 }
