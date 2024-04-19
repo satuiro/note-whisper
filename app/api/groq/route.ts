@@ -28,7 +28,7 @@ async function chatResponse(transcribeText: string) {
                 "content": `${transcribeText} (don't give any extra response or comment just give me to the point response containing in format  "answer" nothing else in the response no model suggestions or any type of extra commentary)`
             }
         ],
-        "model": "mixtral-8x7b-32768",
+        "model": "llama3-8b-8192",
         "temperature": 1,
         "max_tokens": 1024,
         "top_p": 1,
