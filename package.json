@@ -12,6 +12,7 @@
   "dependencies": {
     "@clerk/nextjs": "^4.29.10",
     "@deepgram/sdk": "^3.0.0-beta.2",
+    "@ducanh2912/next-pwa": "^10.2.6",
     "@prisma/client": "^5.12.0",
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-slot": "^1.0.2",
