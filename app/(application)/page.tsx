@@ -1,11 +1,17 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
+import { useUser } from "@clerk/nextjs";
 import { ArrowRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function HomePage() {
+    const user = useUser()
     const router = useRouter();
+
+    if (user) {
+        router.push("/dashboard");
+    }
 
     return (
         <div className=" w-full max-w-xl px-5 xl:px-0">
