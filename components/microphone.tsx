@@ -217,7 +217,7 @@ export default function Microphone() {
         <div className="mt-20 p-6 text-xl text-center">
           {caption && micOpen
             ? caption
-            : "** Realtime transcription by Deepgram **"}
+            : "** Press the mic to speak and press again to save **"}
         </div>
       </div>
       <div
