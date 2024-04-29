@@ -9,7 +9,7 @@ export default function HomePage() {
     const user = useUser()
     const router = useRouter();
 
-    if (user) {
+    if (user.isSignedIn) {
         router.push("/dashboard");
     }
 
