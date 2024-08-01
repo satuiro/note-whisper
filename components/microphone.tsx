@@ -71,7 +71,10 @@ export default function Microphone() {
     if (!apiKey) {
       // console.log("getting a new api key");
       fetch("/api/deepgram", { cache: "no-store" })
-        .then((res) => res.json())
+        .then((res) => {
+          console.log("Response is ", res);
+          return res.json();
+        })
         .then((object) => {
           if (!("key" in object)) throw new Error("No api key returned");
 
